@@ -10,7 +10,7 @@ const interactionTitle=$('#interactionTitle'), interactionKicker=$('#interaction
 const clinicalStatus=$('#clinicalStatus'), patientStateEl=$('#patientState'), clinicalClock=$('#clinicalClock');
 const toast=$('#toast');
 
-const WORLD=150;
+const WORLD=210;
 const BASE_POS=new THREE.Vector3(-48,0,36);
 const AMB_POS=new THREE.Vector3(-42,0,34);
 const ACCIDENT_POS=new THREE.Vector3(42,0,-28);
@@ -70,10 +70,10 @@ function updateSirenAudio(t){if(!sirenGain||!sirenOscA||!sirenOscB)return;const 
 async function init(){
   renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
-  scene=new THREE.Scene();scene.background=new THREE.Color(0x86a9c0);scene.fog=new THREE.Fog(0x86a9c0,62,145);
-  camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,220);clock=new THREE.Clock();
+  scene=new THREE.Scene();scene.background=new THREE.Color(0x86a9c0);scene.fog=new THREE.Fog(0x86a9c0,78,205);
+  camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,310);clock=new THREE.Clock();
   const hemi=new THREE.HemisphereLight(0xddeeff,0x5d4b39,1.85);scene.add(hemi);
-  const sun=new THREE.DirectionalLight(0xffe5bd,3.0);sun.position.set(-35,65,28);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-70;sun.shadow.camera.right=70;sun.shadow.camera.top=70;sun.shadow.camera.bottom=-70;scene.add(sun);
+  const sun=new THREE.DirectionalLight(0xffe5bd,3.0);sun.position.set(-35,65,28);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-105;sun.shadow.camera.right=105;sun.shadow.camera.top=105;sun.shadow.camera.bottom=-105;scene.add(sun);
   initAudio();buildCity();buildActors();buildAccident();bindInput();resize();addEventListener('resize',resize);
   phase='BASE';setObjective('EM SERVIÇO','Apresente-se na unidade e aguarde a central.');missionStart=performance.now();logEvent('Plantão iniciado.');
   show(game);requestAnimationFrame(loop);
