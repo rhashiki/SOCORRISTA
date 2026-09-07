@@ -23,6 +23,8 @@ function v95PixelCap(){
   if(profile==='high')return Math.min(d,V95_COARSE?.86:.95);
   return Math.min(d,V95_COARSE?.66:.76);
 }
+function v95FarPlane(){const p=typeof V16_PROFILE==='string'?V16_PROFILE:'balanced';return p==='eco'?92:p==='high'?158:112;}
+function v95FogFar(){const p=typeof V16_PROFILE==='string'?V16_PROFILE:'balanced';return p==='eco'?76:p==='high'?132:94;}
 
 function v95ApplyBudget(){
   if(!renderer)return;
@@ -33,11 +35,8 @@ function v95ApplyBudget(){
   renderer.shadowMap.enabled=heavyShadows;
   renderer.shadowMap.autoUpdate=heavyShadows;
   scene?.traverse?.(o=>{if(o?.isDirectionalLight)o.castShadow=heavyShadows;});
-  if(scene?.fog){
-    scene.fog.near=profile==='eco'?38:profile==='high'?62:46;
-    scene.fog.far=profile==='eco'?76:profile==='high'?132:94;
-  }
-  if(camera){camera.far=profile==='eco'?92:profile==='high'?158:112;camera.updateProjectionMatrix();}
+  if(scene?.fog){scene.fog.near=profile==='eco'?38:profile==='high'?62:46;scene.fog.far=v95FogFar();}
+  if(camera){camera.far=v95FarPlane();camera.updateProjectionMatrix();}
   window.RF_PERFORMANCE={...(window.RF_PERFORMANCE||{}),build:95,pixelCap:cap,shadowMap:heavyShadows,profile};
 }
 
@@ -45,6 +44,15 @@ function v95ApplyBudget(){
 if(typeof v93PixelCap==='function')v93PixelCap=v95PixelCap;
 if(typeof v70ProfileCap==='function')v70ProfileCap=v95PixelCap;
 if(typeof v93ApplyPerformanceBudget==='function')v93ApplyPerformanceBudget=v95ApplyBudget;
+
+// Build 94 was restoring camera.far=205 every frame on desktop. Keep FPS projection inside the same budget.
+if(typeof v94ApplyCameraProjection==='function')v94ApplyCameraProjection=function(fov){
+  if(!camera)return;let changed=false;
+  if(Math.abs(camera.fov-fov)>.05){camera.fov=fov;changed=true;}
+  if(camera.near!==.055){camera.near=.055;changed=true;}
+  const far=v95FarPlane();if(camera.far!==far){camera.far=far;changed=true;}
+  if(changed)camera.updateProjectionMatrix();
+};
 
 function v95DistSq(obj){
   if(!obj||!camera)return Infinity;
@@ -85,9 +93,7 @@ updatePedestrians=function(dt){
   if(V95_PED_ACC<1/hz)return;const step=Math.min(V95_PED_ACC,.12);V95_PED_ACC=0;v95PedDelegate(step);
 };
 const v95LightDelegate=updateTrafficLights;
-updateTrafficLights=function(){
-  const now=performance.now();if(now-V95_LIGHT_ACC<125)return;V95_LIGHT_ACC=now;v95LightDelegate();
-};
+updateTrafficLights=function(){const now=performance.now();if(now-V95_LIGHT_ACC<125)return;V95_LIGHT_ACC=now;v95LightDelegate();};
 
 // DOM/HUD proximity checks do not need render-frequency updates.
 const v95ContextDelegate=updateContext;
