@@ -55,9 +55,28 @@ jobs:
           PY
           node --check /tmp/reforce-integrated.js
 
-      - name: Verify Build 30 integration markers
+      - name: Verify current build markers
         run: |
-          grep -q 'incident-v8.js' index.html
-          grep -q 'director-v30.js' index.html
-          grep -q 'integration-v30.js' index.html
-          grep -q "reforce-openworld-v30" sw.js
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          html=Path('index.html').read_text(encoding='utf-8')
+          sw=Path('sw.js').read_text(encoding='utf-8')
+          m=re.search(r'<meta name="reforce-build" content="(\d+)"',html)
+          if not m:
+              print('Missing reforce-build meta')
+              sys.exit(1)
+          build=m.group(1)
+          expected=f'reforce-openworld-v{build}'
+          if expected not in sw:
+              print('Service Worker cache mismatch:', expected)
+              sys.exit(1)
+          required=['incident-v8.js','director-v30.js','integration-v30.js']
+          if int(build)>=35:
+              required += ['materials-v31.js','patientvisual-v32.js','traffic-v33.js','radio-v34.js','scenario-v35.js']
+          missing=[x for x in required if x not in html]
+          if missing:
+              print('Missing integration markers:',missing)
+              sys.exit(1)
+          print('Validated build',build)
+          PY
