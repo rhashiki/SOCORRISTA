@@ -7,7 +7,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Re.Force - APH</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=4" />
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
 </head>
 <body>
   <div id="bootError" class="boot-error" hidden></div>
@@ -71,7 +72,7 @@
         <b id="objectiveText"></b>
       </section>
 
-      <div class="camera-hint">ARRASTE • PINÇA PARA ZOOM • TOQUE NOS PONTOS DA CENA</div>
+      <div class="camera-hint">ARRASTE • PINÇA PARA ZOOM • TOQUE DIRETAMENTE NA VÍTIMA</div>
 
       <section id="actionSheet" class="action-sheet tactical-frame"></section>
     </div>
@@ -96,6 +97,6 @@
     </section>
   </main>
 
-  <script type="module" src="./app.js?v=3"></script>
+  <script type="module" src="./app.js?v=4"></script>
 </body>
 </html>
