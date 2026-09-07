@@ -8,15 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Re.Force - APH</title>
   <link rel="stylesheet" href="./styles.css?v=5" />
-  <style>.minimap-wrap{top:calc(86px + env(safe-area-inset-top));bottom:auto}</style>
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-    }
-  }
-  </script>
+  <link rel="stylesheet" href="./visual-v6.css?v=6" />
 </head>
 <body>
   <section id="landing" class="screen active">
@@ -25,7 +17,7 @@
       <div class="brand"><span class="brand-badge">RF</span><div><small>SIMULADOR OPERACIONAL APH</small><h1>RE.<b>FORCE</b></h1></div></div>
       <p>Um turno, uma cidade, ocorrências dinâmicas. Dirija, leia a cena e atenda sem receber o protocolo mastigado.</p>
       <div class="mode-row"><span>TERCEIRA PESSOA</span><span>OPEN WORLD</span><span>CLÍNICA DINÂMICA</span></div>
-      <button id="startShift" class="primary-btn">INICIAR PLANTÃO</button>
+      <button id="startShift" class="primary-btn" onclick="init()">INICIAR PLANTÃO</button>
       <small class="legal">Protótipo educacional. Não substitui capacitação prática nem protocolos institucionais.</small>
     </div>
   </section>
@@ -40,6 +32,7 @@
     </header>
 
     <div id="toast" class="toast" hidden></div>
+    <div id="districtBanner" class="district-banner" hidden>CENTRO</div>
 
     <aside class="minimap-wrap">
       <canvas id="minimap" width="180" height="180"></canvas>
@@ -114,6 +107,12 @@
     </div>
   </section>
 
-  <script type="module" src="./app.js?v=5"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js"></script>
+  <script src="./state-v6.js?v=6"></script>
+  <script src="./city-v6.js?v=6"></script>
+  <script src="./actors-v6.js?v=6"></script>
+  <script src="./scene-v6.js?v=6"></script>
+  <script src="./world-v6.js?v=6"></script>
+  <script src="./clinical-v6.js?v=6"></script>
 </body>
 </html>
