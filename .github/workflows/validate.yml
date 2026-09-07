@@ -80,5 +80,14 @@ jobs:
           if build>=90: required += ['patientexpression-v86.js','outerfacades-v87.js','streetdensity-v88.js','maplabels-v89.js','shadowfocus-v90.js']
           missing=[x for x in required if x not in html]
           if missing: print('Missing integration markers:',missing); sys.exit(1)
+          if build>=91:
+              css=Path('visual-v36.css').read_text(encoding='utf-8').replace(' ','').replace('\n','')
+              mapjs=Path('map-v36.js').read_text(encoding='utf-8')
+              if '.full-map-modal[hidden]{display:none!important}' not in css:
+                  print('Map hidden regression: CSS does not force hidden modal off'); sys.exit(1)
+              if 'function v36SetVisible' not in mapjs or "modal.style.display='none'" not in mapjs:
+                  print('Map hidden regression: explicit JS visibility guard missing'); sys.exit(1)
+              if './visual-v36.css?v=91' not in html or './map-v36.js?v=91' not in html:
+                  print('Map hotfix cache-bust markers missing'); sys.exit(1)
           print('Validated build',build)
           PY
