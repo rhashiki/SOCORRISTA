@@ -1,0 +1,7 @@
+/* Re.Force APH — Build 92 / v92
+ * Global visibility contract: the HTML hidden attribute always wins over component display rules.
+ */
+[hidden]{display:none!important}
+#glasgowModal[aria-hidden="true"]{display:none!important}
+#glasgowModal .clinical-modal{max-height:92vh;overflow:auto}
+#glasgowModal .select-grid label{line-height:1.25}
