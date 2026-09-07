@@ -86,6 +86,8 @@ jobs:
               if 'const WORLD=210;' not in state:
                   print('Expanded-world marker missing from state-v6.js')
                   sys.exit(1)
+          if build>=80:
+              required += ['expandedmap-v76.js','landmarks-v77.js','districtstream-v78.js','outerlanes-v79.js','vehiclecontrols-v80.js','visual-v80.css']
           missing=[x for x in required if x not in html]
           if missing:
               print('Missing integration markers:',missing)
