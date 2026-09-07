@@ -38,9 +38,9 @@ function v32UpdatePatientVisual(dt){
   rig.torso.rotation.x=THREE.MathUtils.lerp(rig.torso.rotation.x,ACTIVE_CASE.focus==='B'&&unresolved?-.04:0,1-Math.exp(-dt*4));
 
   const neuro=ACTIVE_CASE.focus==='D'&&clinicalStage==='D';
-  const responsiveness=neuro?.07:(unresolved?.035:.015);
+  const responsiveness=neuro ? .07 : (unresolved ? .035 : .015);
   rig.head.rotation.z=THREE.MathUtils.lerp(rig.head.rotation.z,responsiveness+severity*.055+Math.sin(t*.75)*.012,1-Math.exp(-dt*3));
-  rig.head.rotation.x=THREE.MathUtils.lerp(rig.head.rotation.x,neuro?.06:0,1-Math.exp(-dt*3));
+  rig.head.rotation.x=THREE.MathUtils.lerp(rig.head.rotation.x,neuro ? .06 : 0,1-Math.exp(-dt*3));
 
   const pale=new THREE.Color(0xd2b4a3);
   for(const x of V32_SKIN){
@@ -50,7 +50,7 @@ function v32UpdatePatientVisual(dt){
   }
 
   if(rig.leftArm&&rig.rightArm){
-    const tension=unresolved?(ACTIVE_CASE.focus==='B'?.09:.04):0;
+    const tension=unresolved ? (ACTIVE_CASE.focus==='B' ? .09 : .04) : 0;
     rig.leftArm.rotation.z=THREE.MathUtils.lerp(rig.leftArm.rotation.z,-tension,1-Math.exp(-dt*3));
     rig.rightArm.rotation.z=THREE.MathUtils.lerp(rig.rightArm.rotation.z,tension,1-Math.exp(-dt*3));
   }
