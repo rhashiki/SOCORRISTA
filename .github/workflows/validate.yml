@@ -78,6 +78,8 @@ jobs:
           if build>=80: required += ['expandedmap-v76.js','landmarks-v77.js','districtstream-v78.js','outerlanes-v79.js','vehiclecontrols-v80.js','visual-v80.css']
           if build>=85: required += ['characterquality-v81.js','locomotion-v82.js','ambulance-v83.js','trafficmotion-v84.js','renderstyle-v85.js']
           if build>=90: required += ['patientexpression-v86.js','outerfacades-v87.js','streetdensity-v88.js','maplabels-v89.js','shadowfocus-v90.js']
+          if build>=94: required += ['performancefix-v93.js','firstperson-v94.js','visual-v94.css']
+          if build>=95: required += ['desktopperf-v95.js']
           missing=[x for x in required if x not in html]
           if missing: print('Missing integration markers:',missing); sys.exit(1)
           if build>=91:
@@ -103,5 +105,12 @@ jobs:
                   print('Glasgow PT-BR labels missing'); sys.exit(1)
               if './glasgowfix-v92.js?v=92' not in html or './hotfix-v92.css?v=92' not in html:
                   print('Glasgow hotfix cache-bust markers missing'); sys.exit(1)
+          if build>=95:
+              perf95=Path('desktopperf-v95.js').read_text(encoding='utf-8')
+              markers=['antialias:false',"heavyShadows=profile==='high'&&!V95_COARSE","return p==='high'?60:p==='eco'?24:30",'camera.far=v95FarPlane()','V95_TRAFFIC_ACC<1/hz','V95_PED_ACC<1/hz']
+              miss=[x for x in markers if x not in perf95]
+              if miss: print('Build 95 performance contract missing:',miss); sys.exit(1)
+              if './desktopperf-v95.js?v=95' not in html or './integration-v30.js?v=95' not in html:
+                  print('Build 95 cache-bust/integration markers missing'); sys.exit(1)
           print('Validated build',build)
           PY
