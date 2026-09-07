@@ -1,31 +1,39 @@
 # Re.Force - APH
 
-Jogo 3D mobile-first de atendimento pré-hospitalar com estrutura open-world inspirada na legibilidade e no loop de gameplay dos jogos 3D da era PS2, mas com identidade própria da Re.Force.
+Jogo/simulador 3D educacional mobile-first de atendimento pré-hospitalar em um mundo aberto compacto.
 
-## Vertical Slice v6 — Visual / World Upgrade
+## Fluxo da Vertical Slice
+Base Re.Force → chamado da Central → ambulância → deslocamento pela cidade → chegada → segurança da cena → abordagem da vítima → XABCDE → Glasgow → SAMPLE → avaliação secundária → debrief.
 
-A v6 mantém o fluxo clínico da v5 e melhora a sensação de jogo:
+## Build 2 / v6 — Open World & Visual Upgrade
+- cidade modular com ruas, fachadas, hospital e base;
+- semáforos e tráfego básico;
+- pedestres, curiosos e carros estacionados;
+- ambulância Re.Force própria;
+- câmera third-person suavizada;
+- áudio procedural de Central e sirene;
+- arquitetura separada em mundo, atores, cena e camada clínica.
 
-- câmera em terceira pessoa suavizada, com auto-follow e rotação natural por toque;
-- FOV dinâmico durante a condução;
-- ambulância low-poly própria e reconhecível, com cabine, baú, rodas, faixas e lightbar;
-- semáforos com ciclo funcional;
-- tráfego NPC que freia no vermelho, mantém distância e reduz velocidade diante da sirene;
-- pedestres com rotas e travessias;
-- cidade com fachadas detalhadas, vitrines, placas, marquises, calçadas, meios-fios, faixas de pedestres e mobiliário urbano;
-- carros estacionados, pontos de ônibus, palmeiras e iluminação de rua;
-- banners de localização por distrito;
-- áudio procedural simples para rádio e sirene;
-- identidade visual do socorrista Re.Force aplicada ao personagem;
-- fluxo completo preservado: base → chamado → ambulância → deslocamento → cena → protocolos → debrief.
+## Build 3 / v7 — Living World & Character Upgrade
+A v7 mantém a clínica da v6 e melhora sensação de jogo:
 
-## Protocolos do vertical slice
+- personagem socorrista procedural articulado, com braços, antebraços, pernas, joelhos, cabeça e tronco independentes;
+- animação procedural de caminhada, corrida, idle e respiração;
+- pedestres também usam animação corporal segmentada;
+- curiosos passam a reagir ao controle da cena e se afastam quando o entorno é organizado;
+- colisão do jogador com tráfego, carros estacionados e ambulância;
+- pedestres mantêm distância básica entre si e reagem à sirene;
+- câmera GTA-like com auto-follow, offset de ombro, look-ahead e leve resposta à velocidade;
+- FOV veicular dinâmico;
+- falas ambientais ocasionais de testemunhas/curiosos;
+- pequenas variações textuais do chamado para reduzir repetição.
+
+## Protocolos educacionais da Vertical Slice
 - XABCDE
 - Escala de Coma de Glasgow
 - SAMPLE
 - Avaliação secundária da vítima de trauma
 
-## Arquitetura v6
-A build publicada foi dividida em `state-v6.js`, `city-v6.js`, `actors-v6.js`, `scene-v6.js`, `world-v6.js` e `clinical-v6.js`. Os personagens, ambulância, veículos de fallback e cenário principal são gerados pelo próprio jogo em low-poly, reduzindo dependências externas de assets. O render utiliza Three.js carregado por CDN.
+O jogo evita indicar a resposta por hotspots visíveis. A proposta é observar, interpretar, priorizar e receber feedback no debrief.
 
-> Ferramenta educacional. Não substitui treinamento prático, protocolos institucionais ou supervisão profissional.
+> Ferramenta educacional. Não substitui treinamento prático, protocolos institucionais, supervisão profissional ou serviços de emergência.
