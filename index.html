@@ -1,47 +1,101 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#07101e">
-<title>Re.Force - APH</title>
-<style>
-:root{--bg:#07101e;--card:#102038;--line:#ffffff18;--txt:#f5f8ff;--mut:#9fb0c4;--cyan:#59e7ff;--lime:#8cffbc;--amber:#ffd169;--red:#ff6b78}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:radial-gradient(circle at 50% -20%,#15395c,#07101e 45%,#030810);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100%;overscroll-behavior:none}button{font:inherit}.screen{display:none;min-height:100svh}.screen.on{display:block}#home{max-width:760px;margin:auto;padding:calc(24px + env(safe-area-inset-top)) 16px 28px}.hero small{color:var(--cyan);font-weight:900;letter-spacing:.16em}.hero h1{font-size:clamp(42px,12vw,70px);line-height:.9;letter-spacing:-.07em;margin:12px 0}.hero h1 span{color:var(--cyan)}.hero p{color:var(--mut);line-height:1.5}.panel,.mission,.sheet,.question{background:linear-gradient(180deg,#142941dd,#0d1b2ddd);border:1px solid var(--line);box-shadow:0 18px 45px #0005}.panel{padding:16px;border-radius:20px;margin:18px 0}.progress{height:8px;background:#06101b;border-radius:99px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));width:0}.section{margin:24px 2px 10px;font-weight:900;letter-spacing:.12em;font-size:12px}.grid{display:grid;gap:12px}.mission{border-radius:20px;padding:18px;text-align:left;color:inherit;min-height:140px}.mission .tag{display:inline-block;padding:5px 8px;border-radius:8px;border:1px solid var(--line);font-size:10px;color:var(--cyan);font-weight:900;letter-spacing:.1em}.mission h3{font-size:22px;margin:22px 0 6px}.mission p{color:var(--mut);font-size:12px;margin:0}.stars{float:right;color:var(--amber)}#game{height:100svh;overflow:hidden}#wrap{position:relative;height:100svh;background:#0c1927}canvas{width:100%;height:100%;display:block;touch-action:none}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#02070d99,transparent 28%,transparent 56%,#02070de8)}header{position:absolute;z-index:5;top:0;left:0;right:0;padding:calc(12px + env(safe-area-inset-top)) 12px;display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center}.back{width:42px;height:42px;border-radius:14px;background:#07101ecc;border:1px solid var(--line);color:#fff;font-size:28px}.hud small{display:block;color:var(--cyan);font-size:9px;letter-spacing:.12em;font-weight:900}.hud b{font-size:14px}.score{padding:7px 10px;background:#07101ecc;border:1px solid var(--line);border-radius:12px}.objective{position:absolute;z-index:4;top:calc(76px + env(safe-area-inset-top));left:12px;right:12px;border-radius:15px;padding:10px 12px;background:#0b1a2ddd;border:1px solid var(--line);font-size:12px;line-height:1.35}.tip{position:absolute;z-index:3;left:50%;bottom:270px;transform:translateX(-50%);font-size:9px;color:#ffffffaa;white-space:nowrap}.sheet{position:absolute;z-index:6;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:22px;padding:12px 14px;max-height:42svh;overflow:auto}.sheet h3{margin:3px 0 8px}.sheet p{color:var(--mut);font-size:11px;line-height:1.4}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{min-height:56px;border-radius:14px;border:1px solid var(--line);background:#142a43;color:#fff;text-align:left;padding:10px;font-size:11px;font-weight:700}.actions button.done{background:#1c4a3e}.actions button.bad{outline:1px solid var(--red)}.actions button.full{grid-column:1/-1;text-align:center;background:linear-gradient(135deg,#1e6b89,#206d59)}#debrief{max-width:760px;margin:auto;padding:calc(28px + env(safe-area-inset-top)) 16px 32px}.scorebig{font-size:58px;font-weight:900;color:var(--lime);margin:10px 0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#102038;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}.metric b{display:block;font-size:18px}.metric span{font-size:9px;color:var(--mut)}.question{border-radius:16px;padding:12px;margin:10px 0}.question h4{font-size:12px;line-height:1.4}.opts{display:grid;gap:7px}.opts button{border:1px solid var(--line);background:#0d1f33;color:#fff;border-radius:11px;padding:9px;text-align:left;font-size:11px}.opts button.ok{background:#1d4e3d}.opts button.no{background:#5d2833}.feedback{font-size:10px;color:var(--mut);line-height:1.4;margin-top:8px}.cta{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:18px}.cta button{padding:14px;border-radius:14px;border:1px solid var(--line);font-weight:850}.primary{background:linear-gradient(135deg,#47cbe6,#5bdd9c);color:#041018;border:0!important}.ghost{background:#102038;color:#fff}@media(min-width:650px){.grid{grid-template-columns:1fr 1fr}.sheet{left:50%;right:auto;width:min(560px,calc(100% - 20px));transform:translateX(-50%)}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#0a0908" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Re.Force - APH</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-<section id="home" class="screen on"><div class="hero"><small>TREINO INTERATIVO • APH</small><h1>Re.<span>Force</span> <b style="font-size:.4em;color:var(--lime)">- APH</b></h1><p>Memorize protocolos tomando decisões dentro de cenários 3D, com debrief e perguntas só depois da simulação.</p></div><div class="panel"><b>PROGRESSO GERAL <span id="pct" style="float:right">0%</span></b><div class="progress"><i id="bar"></i></div></div><div class="section">MISSÕES</div><div class="grid" id="missions"></div><div class="panel" style="font-size:11px;color:var(--mut)"><b style="color:#fff">Modo de estudo</b><br>Simulador educacional. Não substitui treinamento prático, protocolos locais ou supervisão profissional.</div></section>
-<section id="game" class="screen"><div id="wrap"><canvas id="scene"></canvas><div class="shade"></div><header><button class="back" id="back">‹</button><div class="hud"><small id="proto"></small><b id="title"></b></div><div class="score"><small>PONTOS</small><b id="score">0</b></div></header><div class="objective" id="objective"></div><div class="tip">↔ arraste para olhar • toque na vítima • pinça para zoom</div><div class="sheet" id="sheet"></div></div></section>
-<section id="debrief" class="screen"><small style="color:var(--cyan);font-weight:900;letter-spacing:.14em">DEBRIEF DA OCORRÊNCIA</small><h2 id="dtitle"></h2><div class="scorebig"><span id="final">0</span>/100</div><div class="metrics" id="metrics"></div><div class="section">PERGUNTAS DE FIXAÇÃO</div><div id="questions"></div><div class="cta"><button class="ghost" id="retry">Refazer</button><button class="primary" id="homeBtn">Missões</button></div></section>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js';
-const $=s=>document.querySelector(s), screens=[home,game,debrief];
-const M=[
-{id:'x',p:'XABCDE',t:'Colisão urbana',sub:'Prioridades da avaliação primária',goal:'Reconheça a prioridade e execute a sequência X → A → B → C → D → E.',steps:['X — hemorragia externa grave','A — via aérea','B — respiração','C — circulação','D — estado neurológico','E — exposição/ambiente'],q:[['No XABCDE, o X prioriza:',['Hemorragia externa grave','Entrevista SAMPLE','Avaliação secundária','Cálculo do Glasgow'],0,'O X destaca a identificação e o controle prioritário de hemorragia externa grave.'],['Qual associação está correta?',['D = estado neurológico','B = alergias','C = exposição','E = via aérea'],0,'D corresponde à avaliação neurológica.']]},
-{id:'g',p:'GLASGOW',t:'Queda em escada',sub:'Observe e pontue E/V/M',goal:'Interaja com a vítima e depois registre abertura ocular, resposta verbal e resposta motora.',steps:['Observar resposta espontânea','Chamar a vítima','Verificar resposta verbal','Verificar resposta motora','Registrar E, V e M separadamente'],q:[['Quais são os componentes do Glasgow?',['Ocular, verbal e motor','Pulso, pressão e respiração','Dor, pupilas e memória','Via aérea, ventilação e circulação'],0,'A escala registra separadamente abertura ocular, resposta verbal e resposta motora.'],['E3 + V4 + M5 resulta em:',['12','10','13','15'],0,'3 + 4 + 5 = 12.']]},
-{id:'s',p:'SAMPLE',t:'Queda de bicicleta',sub:'História dirigida em diálogo',goal:'Conduza a história dirigida e organize as informações no mnemônico SAMPLE.',steps:['S — sinais e sintomas','A — alergias','M — medicamentos','P — passado médico','L — última ingestão oral','E — eventos'],q:[['No SAMPLE, A significa:',['Alergias','Avaliação pupilar','Ambiente','Abertura ocular'],0,'A = alergias.'],['Perguntar o que ocorreu antes do evento investiga:',['E — eventos','M — medicamentos','A — alergias','S — sinais'],0,'E reúne os eventos relacionados ao episódio atual.']]},
-{id:'sec',p:'SECUNDÁRIA',t:'Acidente em obra',sub:'Exame sistemático cabeça aos pés',goal:'Faça uma varredura sistemática após a avaliação primária e estabilização inicial.',steps:['Cabeça','Pescoço','Tórax','Abdome','Pelve','Membros','Dorso'],q:[['A avaliação secundária ocorre:',['Após a avaliação primária e estabilização inicial','Antes de avaliar ameaças imediatas','Somente na alta','Apenas sem mecanismo de trauma'],0,'A avaliação secundária vem depois da avaliação primária e da estabilização inicial.'],['Ela é melhor descrita como:',['Exame sistemático da cabeça aos pés','Somente alergias','Somente Glasgow','Apenas local do impacto'],0,'O objetivo é procurar lesões de forma sistemática.']]}
-];
-let P=JSON.parse(localStorage.getItem('reforceAPH')||'{}'),cur=null,state=null,renderer,scene,camera,world,victim,ray=new THREE.Raycaster(),mouse=new THREE.Vector2(),yaw=.55,pitch=.55,dist=8,drag=null,moved=false,pointers=new Map(),pinch=null;
-function show(x){screens.forEach(s=>s.classList.remove('on'));x.classList.add('on')}
-function homeRender(){missions.innerHTML='';M.forEach(m=>{let best=P[m.id]||0,b=document.createElement('button');b.className='mission';b.innerHTML=`<span class="tag">${m.p}</span><span class="stars">${'★'.repeat(best>=90?3:best>=75?2:best>=55?1:0)}${'☆'.repeat(3-(best>=90?3:best>=75?2:best>=55?1:0))}</span><h3>${m.t}</h3><p>${m.sub}</p>`;b.onclick=()=>start(m);missions.appendChild(b)});let sum=M.reduce((a,m)=>a+(P[m.id]||0),0),v=Math.round(sum/(M.length*100)*100);pct.textContent=v+'%';bar.style.width=v+'%'}
-function init3d(){if(renderer)return;renderer=new THREE.WebGLRenderer({canvas:scene,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;window.addEventListener('resize',resize);bind();loop()}
-function resize(){let c=$('#scene');renderer.setSize(c.clientWidth,c.clientHeight,false);camera.aspect=c.clientWidth/c.clientHeight;camera.updateProjectionMatrix()}
-function mk(g,c,p=[0,0,0],s=[1,1,1]){let o=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:c,roughness:.75}));o.position.set(...p);o.scale.set(...s);o.castShadow=o.receiveShadow=true;world.add(o);return o}
-function build(m){scene=new THREE.Scene();scene.background=new THREE.Color(0x12263a);scene.fog=new THREE.Fog(0x12263a,10,24);world=new THREE.Group();scene.add(world);camera=new THREE.PerspectiveCamera(50,1,.1,60);scene.add(new THREE.HemisphereLight(0xbfdcff,0x26303c,2));let sun=new THREE.DirectionalLight(0xffffff,2.2);sun.position.set(-5,9,4);scene.add(sun);mk(new THREE.PlaneGeometry(28,28),0x2a3640,[0,-.02,0]);victim=new THREE.Group();world.add(victim);let skin=0xd9a17f,shirt=0x224e73,pants=0x18293d;let head=new THREE.Mesh(new THREE.SphereGeometry(.42,24,16),new THREE.MeshStandardMaterial({color:skin}));head.position.set(0,1.05,0);victim.add(head);let torso=new THREE.Mesh(new THREE.CapsuleGeometry(.46,.95,6,16),new THREE.MeshStandardMaterial({color:shirt}));torso.rotation.z=Math.PI/2;victim.add(torso);for(let z of [-.3,.3]){let leg=new THREE.Mesh(new THREE.CapsuleGeometry(.16,1.05,5,12),new THREE.MeshStandardMaterial({color:pants}));leg.position.set(-.95,-.05,z);leg.rotation.z=Math.PI/2;victim.add(leg)}for(let z of [-.5,.5]){let arm=new THREE.Mesh(new THREE.CapsuleGeometry(.12,.85,5,12),new THREE.MeshStandardMaterial({color:skin}));arm.position.set(.05,.1,z);arm.rotation.z=Math.PI/2;victim.add(arm)}victim.rotation.y=.25;victim.position.y=.42;victim.userData.tap=true;
-if(m.id==='x'){mk(new THREE.BoxGeometry(3.5,.9,1.8),0x8a2634,[2,.55,-1]);mk(new THREE.CylinderGeometry(.42,.42,.35,20),0x111111,[1,.25,-1.75]);mk(new THREE.CylinderGeometry(.42,.42,.35,20),0x111111,[3,.25,-1.75])}
-if(m.id==='g'){for(let i=0;i<6;i++)mk(new THREE.BoxGeometry(2.4,.25,.8),0x6b7780,[2+i*.34,.12+i*.25,-1.6])}
-if(m.id==='s'){mk(new THREE.TorusGeometry(.62,.08,12,28),0x111111,[2,.65,-1]);mk(new THREE.TorusGeometry(.62,.08,12,28),0x111111,[3.3,.65,-1]);mk(new THREE.BoxGeometry(1.3,.12,.12),0x3d7088,[2.65,1.15,-1])}
-if(m.id==='sec'){for(let i=0;i<5;i++)mk(new THREE.BoxGeometry(.18,2.8,.18),0xc99a43,[2+i*.5,1.4,-1.5]);mk(new THREE.BoxGeometry(3,.16,.7),0xc99a43,[3,2.2,-1.5])}
-resize()}
-function cam(){let cp=Math.cos(pitch);camera.position.set(dist*Math.sin(yaw)*cp,.6+dist*Math.sin(pitch),dist*Math.cos(yaw)*cp);camera.lookAt(0,.5,0)}function loop(){requestAnimationFrame(loop);if(renderer&&camera){cam();renderer.render(scene,camera)}}
-function bind(){let c=$('#scene');c.addEventListener('pointerdown',e=>{c.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){drag={x:e.clientX,y:e.clientY,yaw,pitch};moved=false}if(pointers.size===2){let a=[...pointers.values()];pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),dist}}});c.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1&&drag){let dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>6)moved=true;yaw=drag.yaw-dx*.007;pitch=Math.max(.12,Math.min(1.2,drag.pitch+dy*.005))}if(pointers.size===2&&pinch){let a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);dist=Math.max(4.3,Math.min(12,pinch.dist*(pinch.d/d)))}});let end=e=>{if(!moved&&pointers.size===1)tap(e);pointers.delete(e.pointerId);if(pointers.size<2)pinch=null;if(!pointers.size)drag=null};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end)}
-function tap(e){let r=$('#scene').getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);if(ray.intersectObjects(victim.children,true).length){state.inspect=true;renderSheet()}}
-function start(m){cur=m;state={i:0,score:100,wrong:0,inspect:false,start:Date.now()};proto.textContent=m.p;title.textContent=m.t;score.textContent=100;objective.innerHTML='<b>OBJETIVO:</b> '+m.goal;show(game);init3d();build(m);renderSheet()}
-function renderSheet(){let s=state;if(!s.inspect){sheet.innerHTML=`<h3>Explore a cena</h3><p>Gire a câmera, aproxime e toque diretamente na vítima para iniciar a abordagem.</p>`;return}let html=`<small style="color:var(--cyan);font-weight:900">ETAPA ${Math.min(s.i+1,cur.steps.length)} / ${cur.steps.length}</small><h3>${s.i<cur.steps.length?'Escolha a próxima ação':'Sequência concluída'}</h3><p>${s.i<cur.steps.length?'A ordem importa. Uma decisão fora de sequência reduz a pontuação.':'Finalize para abrir o debrief.'}</p><div class="actions">`;if(s.i<cur.steps.length){cur.steps.forEach((x,i)=>{html+=`<button data-i="${i}" class="${i<s.i?'done':''}">${x}</button>`})}else html+=`<button class="full" id="finish">Finalizar simulação</button>`;html+='</div>';sheet.innerHTML=html;sheet.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>act(+b.dataset.i,b));let f=$('#finish');if(f)f.onclick=finish}
-function act(i,b){if(i===state.i){state.i++;state.score=Math.max(0,state.score);score.textContent=state.score;renderSheet()}else if(i<state.i){}else{state.wrong++;state.score=Math.max(0,state.score-9);score.textContent=state.score;b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),300)}}
-function finish(){let elapsed=Math.round((Date.now()-state.start)/1000),base=Math.max(0,state.score-(state.wrong*2)),finalScore=Math.max(0,Math.min(100,base));P[cur.id]=Math.max(P[cur.id]||0,finalScore);localStorage.setItem('reforceAPH',JSON.stringify(P));dtitle.textContent=cur.t;final.textContent=finalScore;metrics.innerHTML=`<div class="metric"><b>${state.wrong}</b><span>ERROS DE ORDEM</span></div><div class="metric"><b>${elapsed}s</b><span>TEMPO</span></div><div class="metric"><b>${state.inspect?'SIM':'NÃO'}</b><span>INSPEÇÃO 3D</span></div>`;questions.innerHTML='';cur.q.forEach((q,qi)=>{let d=document.createElement('div');d.className='question';d.innerHTML=`<h4>${q[0]}</h4><div class="opts">${q[1].map((o,i)=>`<button data-v="${i}">${o}</button>`).join('')}</div><div class="feedback" style="display:none">${q[3]}</div>`;d.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{if(d.dataset.answered)return;d.dataset.answered=1;let v=+btn.dataset.v;btn.classList.add(v===q[2]?'ok':'no');if(v!==q[2])d.querySelectorAll('button')[q[2]].classList.add('ok');d.querySelector('.feedback').style.display='block'});questions.appendChild(d)});show(debrief);homeRender()}
-back.onclick=()=>{show(home);homeRender()};homeBtn.onclick=()=>{show(home);homeRender()};retry.onclick=()=>start(cur);homeRender();
-</script>
+  <div id="bootError" class="boot-error" hidden></div>
+
+  <main id="home" class="screen is-active" aria-label="Re.Force - APH">
+    <section class="hero tactical-frame">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true"><span>RF</span></div>
+        <div>
+          <div class="eyebrow">ATENDIMENTO PRÉ-HOSPITALAR • SIMULAÇÃO</div>
+          <h1>RE.<span>FORCE</span></h1>
+          <div class="subbrand">APH • TREINAMENTO INTERATIVO</div>
+        </div>
+      </div>
+      <div class="hero-divider"></div>
+      <p class="hero-kicker">TREINE COMO SE FOSSE REAL</p>
+      <p class="hero-copy">Memorize protocolos tomando decisões dentro de ocorrências 3D. Explore a vítima, observe respostas, execute a sequência e só depois enfrente o debrief.</p>
+      <div class="hero-pills">
+        <span>3D</span><span>MOBILE</span><span>DEBRIEF</span><span>PROGRESSO LOCAL</span>
+      </div>
+    </section>
+
+    <section class="progress-card tactical-frame">
+      <div class="progress-head"><b>PROGRESSO OPERACIONAL</b><strong id="progressPct">0%</strong></div>
+      <div class="progress-track"><i id="progressBar"></i></div>
+      <small>Melhor nota registrada em cada protocolo</small>
+    </section>
+
+    <section class="section-head">
+      <span>MISSÕES</span>
+      <small>Escolha uma ocorrência</small>
+    </section>
+    <section id="missionGrid" class="mission-grid"></section>
+
+    <section class="reference-strip tactical-frame">
+      <div><b>XABCDE</b><span>prioridades</span></div>
+      <div><b>GLASGOW</b><span>E • V • M</span></div>
+      <div><b>SAMPLE</b><span>história dirigida</span></div>
+      <div><b>SECUNDÁRIA</b><span>cabeça aos pés</span></div>
+    </section>
+
+    <p class="disclaimer">Simulador educacional. Não substitui treinamento presencial, protocolos locais nem supervisão profissional.</p>
+  </main>
+
+  <main id="game" class="screen game-screen" aria-label="Simulação">
+    <div id="sceneWrap" class="scene-wrap">
+      <canvas id="sceneCanvas" aria-label="Cena 3D da ocorrência"></canvas>
+      <div class="scene-vignette"></div>
+      <div id="sceneLoading" class="scene-loading"><span class="loader"></span><b>PREPARANDO CENÁRIO 3D</b><small id="loadingText">Carregando motor gráfico...</small></div>
+
+      <header class="game-header">
+        <button id="backBtn" class="icon-btn" aria-label="Voltar">‹</button>
+        <div class="game-title"><small id="gameProtocol">PROTOCOLO</small><b id="gameTitle">Ocorrência</b></div>
+        <div class="points-box"><small>PONTOS</small><b id="scoreValue">0</b></div>
+      </header>
+
+      <section class="protocol-rail" id="protocolRail" aria-label="Etapas do protocolo"></section>
+
+      <section class="objective-card tactical-frame">
+        <small>OBJETIVO ATUAL</small>
+        <b id="objectiveText"></b>
+      </section>
+
+      <div class="camera-hint">ARRASTE • PINÇA PARA ZOOM • TOQUE NOS PONTOS DA CENA</div>
+
+      <section id="actionSheet" class="action-sheet tactical-frame"></section>
+    </div>
+  </main>
+
+  <main id="debrief" class="screen debrief-screen">
+    <section class="debrief-hero tactical-frame">
+      <div class="eyebrow">DEBRIEF DA OCORRÊNCIA</div>
+      <h2 id="debriefTitle"></h2>
+      <div class="final-score"><strong id="finalScore">0</strong><span>/100</span></div>
+      <div id="gradeText" class="grade-text"></div>
+    </section>
+
+    <section id="metricGrid" class="metric-grid"></section>
+
+    <section class="section-head"><span>PERGUNTAS DE FIXAÇÃO</span><small>após a simulação</small></section>
+    <section id="questionList" class="question-list"></section>
+
+    <section class="debrief-actions">
+      <button id="retryBtn" class="btn secondary">REFAZER MISSÃO</button>
+      <button id="homeBtn" class="btn primary">VOLTAR ÀS MISSÕES</button>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
