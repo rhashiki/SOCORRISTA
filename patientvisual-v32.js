@@ -37,8 +37,8 @@ function v32UpdatePatientVisual(dt){
   rig.torso.position.y=breathe;
   rig.torso.rotation.x=THREE.MathUtils.lerp(rig.torso.rotation.x,ACTIVE_CASE.focus==='B'&&unresolved?-.04:0,1-Math.exp(-dt*4));
 
-  const neuro=ACTIVE_CASE.focus==='D'&&['D'].includes(clinicalStage);
-  const responsiveness=neuro?.07:unresolved?.035:.015;
+  const neuro=ACTIVE_CASE.focus==='D'&&clinicalStage==='D';
+  const responsiveness=neuro?.07:(unresolved?.035:.015);
   rig.head.rotation.z=THREE.MathUtils.lerp(rig.head.rotation.z,responsiveness+severity*.055+Math.sin(t*.75)*.012,1-Math.exp(-dt*3));
   rig.head.rotation.x=THREE.MathUtils.lerp(rig.head.rotation.x,neuro?.06:0,1-Math.exp(-dt*3));
 
