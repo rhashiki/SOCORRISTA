@@ -72,10 +72,9 @@ jobs:
               print('Service Worker cache mismatch:', expected)
               sys.exit(1)
           required=['incident-v8.js','director-v30.js','integration-v30.js']
-          if build>=35:
-              required += ['materials-v31.js','patientvisual-v32.js','traffic-v33.js','radio-v34.js','scenario-v35.js']
-          if build>=40:
-              required += ['map-v36.js','camera-v37.js','lighting-v38.js','transportvisual-v39.js','trafficvariety-v40.js']
+          if build>=35: required += ['materials-v31.js','patientvisual-v32.js','traffic-v33.js','radio-v34.js','scenario-v35.js']
+          if build>=40: required += ['map-v36.js','camera-v37.js','lighting-v38.js','transportvisual-v39.js','trafficvariety-v40.js']
+          if build>=45: required += ['ambient-v41.js','instructor-v42.js','urbandetail-v43.js','npc-v44.js','shift-v45.js']
           missing=[x for x in required if x not in html]
           if missing:
               print('Missing integration markers:',missing)
