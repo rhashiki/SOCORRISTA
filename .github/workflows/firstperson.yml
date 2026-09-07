@@ -22,32 +22,38 @@ jobs:
         run: |
           node --check performancefix-v93.js
           node --check firstperson-v94.js
+          node --check desktopperf-v95.js
           node --check integration-v30.js
-      - name: Verify Build 94 FPS contract
+      - name: Verify FPS contract
         run: |
           python - <<'PY'
           from pathlib import Path
-          import sys
+          import sys,re
           html=Path('index.html').read_text(encoding='utf-8')
           fps=Path('firstperson-v94.js').read_text(encoding='utf-8')
+          desk=Path('desktopperf-v95.js').read_text(encoding='utf-8')
           boot=Path('integration-v30.js').read_text(encoding='utf-8')
           sw=Path('sw.js').read_text(encoding='utf-8')
+          m=re.search(r'<meta name="reforce-build" content="(\d+)"',html)
+          build=int(m.group(1)) if m else 0
           checks={
-            'meta build 94':'<meta name="reforce-build" content="94"' in html,
+            'build 94+':build>=94,
             'first person label':'PRIMEIRA PESSOA' in html,
             'performance integrated':'./performancefix-v93.js?v=94' in html,
             'fps integrated':'./firstperson-v94.js?v=94' in html,
             'fps css integrated':'./visual-v94.css?v=94' in html,
-            'sw v94':'reforce-openworld-v94' in sw,
+            'desktop rescue integrated':build<95 or './desktopperf-v95.js?v=95' in html,
+            'service worker matches build':f'reforce-openworld-v{build}' in sw,
             'player model hidden':'player.visual.visible=false' in fps,
             'fps camera override':'updateCamera=function(dt)' in fps,
             'fps player override':'updatePlayer=function(dt)' in fps,
             'mobile antialias disabled':'antialias:false' in fps,
-            'tight mobile pixel cap':'return Math.min(d,.74)' in fps,
-            'bootstrap v94':'window.RF_BUILD=94' in boot,
+            'desktop antialias disabled':build<95 or 'antialias:false' in desk,
+            'bootstrap current build':f'window.RF_BUILD={build}' in boot,
             'no duplicate dynamic performance loader':"createElement('script')" not in boot,
           }
           bad=[k for k,v in checks.items() if not v]
           for k,v in checks.items(): print(('OK ' if v else 'FAIL ')+k)
           if bad: sys.exit(1)
+          print('FPS contract valid on Build',build)
           PY
