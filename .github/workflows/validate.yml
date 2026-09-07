@@ -89,5 +89,19 @@ jobs:
                   print('Map hidden regression: explicit JS visibility guard missing'); sys.exit(1)
               if './visual-v36.css?v=91' not in html or './map-v36.js?v=91' not in html:
                   print('Map hotfix cache-bust markers missing'); sys.exit(1)
+          if build>=92:
+              required92=['glasgowfix-v92.js','hotfix-v92.css']
+              missing92=[x for x in required92 if x not in html]
+              if missing92: print('Glasgow hotfix assets missing:',missing92); sys.exit(1)
+              css92=Path('hotfix-v92.css').read_text(encoding='utf-8').replace(' ','').replace('\n','')
+              js92=Path('glasgowfix-v92.js').read_text(encoding='utf-8')
+              if '[hidden]{display:none!important}' not in css92:
+                  print('Global hidden regression guard missing'); sys.exit(1)
+              if "clinicalStage!=='D'" not in js92 or "['E','V','M'].every" not in js92:
+                  print('Glasgow stage/evidence guard missing'); sys.exit(1)
+              if 'AO — Abertura Ocular' not in html or 'RV — Resposta Verbal' not in html or 'RM — Resposta Motora' not in html:
+                  print('Glasgow PT-BR labels missing'); sys.exit(1)
+              if './glasgowfix-v92.js?v=92' not in html or './hotfix-v92.css?v=92' not in html:
+                  print('Glasgow hotfix cache-bust markers missing'); sys.exit(1)
           print('Validated build',build)
           PY
