@@ -3,100 +3,116 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#0a0908" />
+  <meta name="theme-color" content="#08090b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Re.Force - APH</title>
-  <link rel="stylesheet" href="./styles.css?v=4" />
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+  <link rel="stylesheet" href="./styles.css?v=5" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
-  <div id="bootError" class="boot-error" hidden></div>
-
-  <main id="home" class="screen is-active" aria-label="Re.Force - APH">
-    <section class="hero tactical-frame">
-      <div class="brand-row">
-        <div class="brand-mark" aria-hidden="true"><span>RF</span></div>
-        <div>
-          <div class="eyebrow">ATENDIMENTO PRÉ-HOSPITALAR • SIMULAÇÃO</div>
-          <h1>RE.<span>FORCE</span></h1>
-          <div class="subbrand">APH • TREINAMENTO INTERATIVO</div>
-        </div>
-      </div>
-      <div class="hero-divider"></div>
-      <p class="hero-kicker">TREINE COMO SE FOSSE REAL</p>
-      <p class="hero-copy">Memorize protocolos tomando decisões dentro de ocorrências 3D. Explore a vítima, observe respostas, execute a sequência e só depois enfrente o debrief.</p>
-      <div class="hero-pills">
-        <span>3D</span><span>MOBILE</span><span>DEBRIEF</span><span>PROGRESSO LOCAL</span>
-      </div>
-    </section>
-
-    <section class="progress-card tactical-frame">
-      <div class="progress-head"><b>PROGRESSO OPERACIONAL</b><strong id="progressPct">0%</strong></div>
-      <div class="progress-track"><i id="progressBar"></i></div>
-      <small>Melhor nota registrada em cada protocolo</small>
-    </section>
-
-    <section class="section-head">
-      <span>MISSÕES</span>
-      <small>Escolha uma ocorrência</small>
-    </section>
-    <section id="missionGrid" class="mission-grid"></section>
-
-    <section class="reference-strip tactical-frame">
-      <div><b>XABCDE</b><span>prioridades</span></div>
-      <div><b>GLASGOW</b><span>E • V • M</span></div>
-      <div><b>SAMPLE</b><span>história dirigida</span></div>
-      <div><b>SECUNDÁRIA</b><span>cabeça aos pés</span></div>
-    </section>
-
-    <p class="disclaimer">Simulador educacional. Não substitui treinamento presencial, protocolos locais nem supervisão profissional.</p>
-  </main>
-
-  <main id="game" class="screen game-screen" aria-label="Simulação">
-    <div id="sceneWrap" class="scene-wrap">
-      <canvas id="sceneCanvas" aria-label="Cena 3D da ocorrência"></canvas>
-      <div class="scene-vignette"></div>
-      <div id="sceneLoading" class="scene-loading"><span class="loader"></span><b>PREPARANDO CENÁRIO 3D</b><small id="loadingText">Carregando motor gráfico...</small></div>
-
-      <header class="game-header">
-        <button id="backBtn" class="icon-btn" aria-label="Voltar">‹</button>
-        <div class="game-title"><small id="gameProtocol">PROTOCOLO</small><b id="gameTitle">Ocorrência</b></div>
-        <div class="points-box"><small>PONTOS</small><b id="scoreValue">0</b></div>
-      </header>
-
-      <section class="protocol-rail" id="protocolRail" aria-label="Etapas do protocolo"></section>
-
-      <section class="objective-card tactical-frame">
-        <small>OBJETIVO ATUAL</small>
-        <b id="objectiveText"></b>
-      </section>
-
-      <div class="camera-hint">ARRASTE • PINÇA PARA ZOOM • TOQUE DIRETAMENTE NA VÍTIMA</div>
-
-      <section id="actionSheet" class="action-sheet tactical-frame"></section>
+  <section id="landing" class="screen active">
+    <div class="landing-bg"></div>
+    <div class="landing-card">
+      <div class="brand"><span class="brand-badge">RF</span><div><small>SIMULADOR OPERACIONAL APH</small><h1>RE.<b>FORCE</b></h1></div></div>
+      <p>Um turno, uma cidade, ocorrências dinâmicas. Dirija, leia a cena e atenda sem receber o protocolo mastigado.</p>
+      <div class="mode-row"><span>TERCEIRA PESSOA</span><span>OPEN WORLD</span><span>CLÍNICA DINÂMICA</span></div>
+      <button id="startShift" class="primary-btn">INICIAR PLANTÃO</button>
+      <small class="legal">Protótipo educacional. Não substitui capacitação prática nem protocolos institucionais.</small>
     </div>
-  </main>
+  </section>
 
-  <main id="debrief" class="screen debrief-screen">
-    <section class="debrief-hero tactical-frame">
-      <div class="eyebrow">DEBRIEF DA OCORRÊNCIA</div>
-      <h2 id="debriefTitle"></h2>
-      <div class="final-score"><strong id="finalScore">0</strong><span>/100</span></div>
-      <div id="gradeText" class="grade-text"></div>
-    </section>
+  <section id="game" class="screen game-screen">
+    <canvas id="world"></canvas>
+    <div class="cinema"></div>
 
-    <section id="metricGrid" class="metric-grid"></section>
+    <header class="hud-top">
+      <div class="dispatch-pill"><small id="phaseLabel">EM SERVIÇO</small><b id="objective">Aguardando central...</b></div>
+      <div class="score-pill"><small>XP</small><b id="score">100</b></div>
+    </header>
 
-    <section class="section-head"><span>PERGUNTAS DE FIXAÇÃO</span><small>após a simulação</small></section>
-    <section id="questionList" class="question-list"></section>
+    <div id="toast" class="toast" hidden></div>
 
-    <section class="debrief-actions">
-      <button id="retryBtn" class="btn secondary">REFAZER MISSÃO</button>
-      <button id="homeBtn" class="btn primary">VOLTAR ÀS MISSÕES</button>
-    </section>
-  </main>
+    <aside class="minimap-wrap">
+      <canvas id="minimap" width="180" height="180"></canvas>
+      <div class="map-caption"><span id="mapMode">A PÉ</span><b id="distanceLabel">BASE</b></div>
+    </aside>
 
-  <script type="module" src="./app.js?v=4"></script>
+    <div id="vehicleHud" class="vehicle-hud" hidden>
+      <div><small>VELOCIDADE</small><b><span id="speedValue">0</span> km/h</b></div>
+      <button id="sirenBtn">SIRENE</button>
+    </div>
+
+    <div id="clinicalStatus" class="clinical-status" hidden>
+      <small>PACIENTE</small>
+      <div><span>Estado</span><b id="patientState">—</b></div>
+      <div><span>Tempo clínico</span><b id="clinicalClock">00:00</b></div>
+    </div>
+
+    <div id="joystick" class="joystick"><div class="joystick-ring"></div><div id="stick" class="stick"></div></div>
+    <div id="rightControls" class="right-controls">
+      <button id="actionBtn" class="round action">USAR</button>
+      <button id="runBtn" class="round">CORRER</button>
+    </div>
+
+    <button id="cameraReset" class="camera-reset">◎</button>
+
+    <div id="dispatchModal" class="modal-backdrop" hidden>
+      <div class="dispatch-card">
+        <div class="radio-head"><span>● CENTRAL RE.FORCE</span><small>CHAMADO NOVO</small></div>
+        <h2>COLISÃO CARRO × MOTO</h2>
+        <div class="dispatch-grid">
+          <div><small>QTH</small><b>Av. Central × Rua 4</b></div>
+          <div><small>VÍTIMAS</small><b>1 ao solo</b></div>
+          <div><small>PRIORIDADE</small><b class="priority">ALTA</b></div>
+          <div><small>INFO</small><b>Trânsito ativo no local</b></div>
+        </div>
+        <button id="acceptCall" class="primary-btn">ACEITAR OCORRÊNCIA</button>
+      </div>
+    </div>
+
+    <div id="interactionPanel" class="interaction-panel" hidden>
+      <div class="interaction-head"><div><small id="interactionKicker">INTERAÇÃO</small><b id="interactionTitle">Paciente</b></div><button id="closeInteraction">×</button></div>
+      <p id="interactionText"></p>
+      <div id="interactionActions" class="interaction-actions"></div>
+      <div id="observationBox" class="observation-box" hidden></div>
+    </div>
+
+    <div id="glasgowModal" class="modal-backdrop" hidden>
+      <div class="clinical-modal">
+        <small>REGISTRO NEUROLÓGICO</small><h2>Escala de Glasgow</h2>
+        <p id="glasgowEvidence"></p>
+        <div class="select-grid">
+          <label>E<select id="gE"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+          <label>V<select id="gV"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <label>M<select id="gM"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        </div>
+        <button id="saveGlasgow" class="primary-btn">REGISTRAR</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="debrief" class="screen debrief-screen">
+    <div class="debrief-card">
+      <small>OCORRÊNCIA ENCERRADA</small>
+      <h1 id="debriefGrade">MISSÃO CONCLUÍDA</h1>
+      <div class="big-score"><b id="finalScore">0</b><span>/100</span></div>
+      <div id="summaryMetrics" class="summary-metrics"></div>
+      <h3>LINHA DO TEMPO</h3>
+      <div id="timeline" class="timeline"></div>
+      <h3>APRENDIZADO</h3>
+      <div id="learning" class="learning"></div>
+      <button id="restartBtn" class="primary-btn">NOVO PLANTÃO</button>
+    </div>
+  </section>
+
+  <script type="module" src="./app.js?v=5"></script>
 </body>
 </html>
