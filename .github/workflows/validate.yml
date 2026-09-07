@@ -66,14 +66,16 @@ jobs:
           if not m:
               print('Missing reforce-build meta')
               sys.exit(1)
-          build=m.group(1)
+          build=int(m.group(1))
           expected=f'reforce-openworld-v{build}'
           if expected not in sw:
               print('Service Worker cache mismatch:', expected)
               sys.exit(1)
           required=['incident-v8.js','director-v30.js','integration-v30.js']
-          if int(build)>=35:
+          if build>=35:
               required += ['materials-v31.js','patientvisual-v32.js','traffic-v33.js','radio-v34.js','scenario-v35.js']
+          if build>=40:
+              required += ['map-v36.js','camera-v37.js','lighting-v38.js','transportvisual-v39.js','trafficvariety-v40.js']
           missing=[x for x in required if x not in html]
           if missing:
               print('Missing integration markers:',missing)
