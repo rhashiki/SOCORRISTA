@@ -1,0 +1,7 @@
+/* Re.Force APH — Build 94 / v94 */
+#fpsReticle{position:absolute;z-index:11;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%);border:1px solid #ffffffb8;border-radius:50%;box-shadow:0 0 0 1px #0008,0 0 8px #0009;pointer-events:none}
+#fpsReticle:after{content:'';position:absolute;left:50%;top:50%;width:2px;height:2px;transform:translate(-50%,-50%);background:#fff;border-radius:50%}
+body:not(.rf-fps) #fpsReticle{display:none}
+.rf-fps .camera-reset{font-size:0}
+.rf-fps .camera-reset:after{content:'↺';font-size:18px}
+@media(max-width:899px){.rf-fps .cinema{background:linear-gradient(#0005,transparent 13%,transparent 78%,#0006)}.rf-fps #fpsReticle{opacity:.72}}
