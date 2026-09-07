@@ -1,0 +1,2 @@
+/* Build 20 / v24 */
+.env-badge{position:absolute;z-index:18;left:50%;top:calc(82px + env(safe-area-inset-top));transform:translate(-50%,-10px);opacity:0;padding:6px 10px;background:#0a1015d9;border:1px solid #ffffff18;color:#d9e0e4;font-size:7px;font-weight:900;letter-spacing:.14em;transition:.4s}.env-badge.show{opacity:1;transform:translate(-50%,0)}
