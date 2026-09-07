@@ -22,14 +22,17 @@ jobs:
       - name: Check performance scripts syntax
         run: |
           node --check performancefix-v93.js
+          node --check firstperson-v94.js
           node --check integration-v30.js
 
-      - name: Verify Build 93 performance contract
+      - name: Verify performance contract
         run: |
           python - <<'PY'
           from pathlib import Path
-          import sys
+          import sys,re
           perf=Path('performancefix-v93.js').read_text(encoding='utf-8')
+          fps=Path('firstperson-v94.js').read_text(encoding='utf-8')
+          html=Path('index.html').read_text(encoding='utf-8')
           boot=Path('integration-v30.js').read_text(encoding='utf-8')
           required_perf=[
               'const dt=Math.min(raw,.12)',
@@ -43,9 +46,16 @@ jobs:
           missing=[x for x in required_perf if x not in perf]
           if missing:
               print('Performance contract missing:',missing);sys.exit(1)
-          if "./performancefix-v93.js?v=93" not in boot:
-              print('Performance Rescue loader missing from integration bootstrap');sys.exit(1)
+          if './performancefix-v93.js?v=94' not in html:
+              print('Performance Rescue is not integrated in index.html');sys.exit(1)
+          if './firstperson-v94.js?v=94' not in html:
+              print('FPS performance layer is not integrated in index.html');sys.exit(1)
+          if 'antialias:false' not in fps or 'return Math.min(d,.74)' not in fps:
+              print('Mobile FPS render budget missing');sys.exit(1)
           if "start.disabled=true" not in boot or "start.disabled=false" not in boot:
               print('Start-button readiness guard missing');sys.exit(1)
-          print('Build 93 performance contract validated')
+          m=re.search(r'<meta name="reforce-build" content="(\d+)"',html)
+          if not m or int(m.group(1))<94:
+              print('Build marker is older than FPS performance release');sys.exit(1)
+          print('Build',m.group(1),'performance contract validated')
           PY
