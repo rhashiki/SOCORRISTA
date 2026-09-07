@@ -1,5 +1,6 @@
 /* Re.Force APH — Build 36 / v36
  * Full-screen tactical city map and route overview.
+ * Hotfix 91: modal visibility is controlled explicitly to avoid CSS overriding hidden.
  */
 
 let V36_MAP_OPEN=false,V36_CANVAS=null,V36_CTX=null;
@@ -7,12 +8,17 @@ function v36SetupMap(){
   if(document.querySelector('#fullMapBtn'))return;
   const wrap=document.querySelector('.minimap-wrap');if(wrap){const b=document.createElement('button');b.id='fullMapBtn';b.className='full-map-btn';b.textContent='MAPA';wrap.appendChild(b);b.onclick=v36OpenMap;}
   const game=document.querySelector('#game');if(!game)return;
-  const modal=document.createElement('div');modal.id='fullMapModal';modal.className='full-map-modal';modal.hidden=true;
-  modal.innerHTML=`<div class="full-map-card"><div class="full-map-head"><div><small>RE.FORCE • GPS OPERACIONAL</small><b>MAPA DA CIDADE</b></div><button id="closeFullMap">×</button></div><canvas id="fullMapCanvas" width="520" height="520"></canvas><div class="full-map-legend"><span><i class="you"></i>UNIDADE</span><span><i class="call"></i>OCORRÊNCIA</span><span><i class="hospital"></i>HOSPITAL</span><span><i class="base"></i>BASE</span></div><p id="fullMapStatus">—</p></div>`;
-  game.appendChild(modal);V36_CANVAS=modal.querySelector('#fullMapCanvas');V36_CTX=V36_CANVAS.getContext('2d');modal.querySelector('#closeFullMap').onclick=v36CloseMap;
+  const modal=document.createElement('div');modal.id='fullMapModal';modal.className='full-map-modal';modal.hidden=true;modal.style.display='none';
+  modal.innerHTML=`<div class="full-map-card"><div class="full-map-head"><div><small>RE.FORCE • GPS OPERACIONAL</small><b>MAPA DA CIDADE</b></div><button id="closeFullMap" type="button" aria-label="Fechar mapa">×</button></div><canvas id="fullMapCanvas" width="520" height="520"></canvas><div class="full-map-legend"><span><i class="you"></i>UNIDADE</span><span><i class="call"></i>OCORRÊNCIA</span><span><i class="hospital"></i>HOSPITAL</span><span><i class="base"></i>BASE</span></div><p id="fullMapStatus">—</p></div>`;
+  game.appendChild(modal);V36_CANVAS=modal.querySelector('#fullMapCanvas');V36_CTX=V36_CANVAS.getContext('2d');
+  const close=modal.querySelector('#closeFullMap');close.onclick=v36CloseMap;close.addEventListener('pointerup',e=>{e.preventDefault();v36CloseMap();});
 }
-function v36OpenMap(){V36_MAP_OPEN=true;const m=document.querySelector('#fullMapModal');if(m)m.hidden=false;v36DrawMap();}
-function v36CloseMap(){V36_MAP_OPEN=false;const m=document.querySelector('#fullMapModal');if(m)m.hidden=true;}
+function v36SetVisible(open){
+  V36_MAP_OPEN=!!open;const m=document.querySelector('#fullMapModal');if(!m)return;
+  m.hidden=!V36_MAP_OPEN;m.style.display=V36_MAP_OPEN?'grid':'none';m.setAttribute('aria-hidden',V36_MAP_OPEN?'false':'true');
+}
+function v36OpenMap(){v36SetVisible(true);requestAnimationFrame(()=>v36DrawMap());}
+function v36CloseMap(){v36SetVisible(false);}
 function v36Target(){return ['TRANSPORT_RETURN','TRANSPORT_HOSPITAL','AT_HOSPITAL'].includes(phase)?HOSPITAL_POS:ACCIDENT_POS;}
 function v36DrawMap(){
   if(!V36_CTX||!V36_CANVAS)return;const c=V36_CTX,w=V36_CANVAS.width,h=V36_CANVAS.height,pad=24,scale=(w-pad*2)/WORLD,tx=x=>pad+(x+WORLD/2)*scale,tz=z=>pad+(z+WORLD/2)*scale;
@@ -35,5 +41,5 @@ uiBlock=function(){return V36_MAP_OPEN||v36BaseUiBlock();};
 const v36BaseUpdate=update;
 update=function(dt){v36BaseUpdate(dt);if(V36_MAP_OPEN)v36DrawMap();};
 const v36BaseInit=init;
-init=async function(){v36SetupMap();await v36BaseInit();};
-v36SetupMap();
+init=async function(){v36SetupMap();v36SetVisible(false);await v36BaseInit();};
+v36SetupMap();v36SetVisible(false);
