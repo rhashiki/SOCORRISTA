@@ -1,0 +1,53 @@
+name: Validate FPS Build
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-reforce-fps
+  cancel-in-progress: true
+
+jobs:
+  fps-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Check FPS scripts syntax
+        run: |
+          node --check performancefix-v93.js
+          node --check firstperson-v94.js
+          node --check integration-v30.js
+      - name: Verify Build 94 FPS contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+          html=Path('index.html').read_text(encoding='utf-8')
+          fps=Path('firstperson-v94.js').read_text(encoding='utf-8')
+          boot=Path('integration-v30.js').read_text(encoding='utf-8')
+          sw=Path('sw.js').read_text(encoding='utf-8')
+          checks={
+            'meta build 94':'<meta name="reforce-build" content="94"' in html,
+            'first person label':'PRIMEIRA PESSOA' in html,
+            'performance integrated':'./performancefix-v93.js?v=94' in html,
+            'fps integrated':'./firstperson-v94.js?v=94' in html,
+            'fps css integrated':'./visual-v94.css?v=94' in html,
+            'sw v94':'reforce-openworld-v94' in sw,
+            'player model hidden':'player.visual.visible=false' in fps,
+            'fps camera override':'updateCamera=function(dt)' in fps,
+            'fps player override':'updatePlayer=function(dt)' in fps,
+            'mobile antialias disabled':'antialias:false' in fps,
+            'tight mobile pixel cap':'return Math.min(d,.74)' in fps,
+            'bootstrap v94':'window.RF_BUILD=94' in boot,
+            'no duplicate dynamic performance loader':"createElement('script')" not in boot,
+          }
+          bad=[k for k,v in checks.items() if not v]
+          for k,v in checks.items(): print(('OK ' if v else 'FAIL ')+k)
+          if bad: sys.exit(1)
+          PY
