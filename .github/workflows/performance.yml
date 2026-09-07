@@ -1,0 +1,51 @@
+name: Validate Performance Rescue
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-reforce-performance
+  cancel-in-progress: true
+
+jobs:
+  performance-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check performance scripts syntax
+        run: |
+          node --check performancefix-v93.js
+          node --check integration-v30.js
+
+      - name: Verify Build 93 performance contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+          perf=Path('performancefix-v93.js').read_text(encoding='utf-8')
+          boot=Path('integration-v30.js').read_text(encoding='utf-8')
+          required_perf=[
+              'const dt=Math.min(raw,.12)',
+              'renderer.shadowMap.enabled=heavyShadows',
+              'V93_TRAFFIC_ACC<1/30',
+              'V93_PED_ACC<1/24',
+              'const mapStep=V93_MOBILE?1/12:1/24',
+              'v54ApplyLOD=function()',
+              'function v93PixelCap()',
+          ]
+          missing=[x for x in required_perf if x not in perf]
+          if missing:
+              print('Performance contract missing:',missing);sys.exit(1)
+          if "./performancefix-v93.js?v=93" not in boot:
+              print('Performance Rescue loader missing from integration bootstrap');sys.exit(1)
+          if "start.disabled=true" not in boot or "start.disabled=false" not in boot:
+              print('Start-button readiness guard missing');sys.exit(1)
+          print('Build 93 performance contract validated')
+          PY
