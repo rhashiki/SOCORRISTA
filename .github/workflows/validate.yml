@@ -77,6 +77,7 @@ jobs:
           if build>=45: required += ['ambient-v41.js','instructor-v42.js','urbandetail-v43.js','npc-v44.js','shift-v45.js']
           if build>=50: required += ['responderpose-v46.js','dialogue-v47.js','vehicleentry-v48.js','driving-v49.js','mission-v50.js']
           if build>=55: required += ['architecture-v51.js','vehiclevisual-v52.js','animation-v53.js','lod-v54.js','scenequality-v55.js']
+          if build>=60: required += ['textures-v56.js','crowdvisual-v57.js','contactshadow-v58.js','camerapolish-v59.js','skyline-v60.js']
           missing=[x for x in required if x not in html]
           if missing:
               print('Missing integration markers:',missing)
