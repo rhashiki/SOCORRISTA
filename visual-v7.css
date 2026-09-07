@@ -1,0 +1,4 @@
+/* Re.Force APH — Build 3 / v7 */
+.npc-caption{position:absolute;z-index:17;left:50%;bottom:calc(152px + env(safe-area-inset-bottom));transform:translate(-50%,12px);max-width:min(86vw,520px);padding:8px 12px;background:#080b0edb;border-left:3px solid #d8a05b;color:#f1e8dc;font-size:11px;font-weight:750;line-height:1.35;letter-spacing:.02em;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;box-shadow:0 8px 24px #0008;text-align:center}.npc-caption.show{opacity:1;transform:translate(-50%,0)}
+.game-screen:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(90deg,#00000014,transparent 12%,transparent 88%,#00000014)}
+@media(max-width:520px){.npc-caption{bottom:calc(132px + env(safe-area-inset-bottom));font-size:10px}.dispatch-pill{max-width:74%}}
