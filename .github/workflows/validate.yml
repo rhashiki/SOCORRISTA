@@ -1,0 +1,63 @@
+name: Validate Re.Force Build
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-reforce
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check JavaScript syntax
+        run: |
+          set -e
+          for f in *.js; do
+            echo "Checking $f"
+            node --check "$f"
+          done
+
+      - name: Verify index local assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          html=Path('index.html').read_text(encoding='utf-8')
+          refs=re.findall(r'(?:src|href)=["\']\.\/([^?"\']+)',html)
+          missing=[p for p in refs if not Path(p).exists()]
+          print('Local assets:', len(refs))
+          if missing:
+              print('Missing:', missing)
+              sys.exit(1)
+          PY
+
+      - name: Check integrated script order for declaration conflicts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script[^>]+src=["\']\.\/([^?"\']+)',html)
+          scripts=[s for s in scripts if Path(s).exists()]
+          print('Integration order:')
+          print('\n'.join(f'{i+1:02d}. {s}' for i,s in enumerate(scripts)))
+          Path('/tmp/reforce-integrated.js').write_text('\n;\n'.join(Path(s).read_text(encoding='utf-8') for s in scripts),encoding='utf-8')
+          PY
+          node --check /tmp/reforce-integrated.js
+
+      - name: Verify Build 30 integration markers
+        run: |
+          grep -q 'incident-v8.js' index.html
+          grep -q 'director-v30.js' index.html
+          grep -q 'integration-v30.js' index.html
+          grep -q "reforce-openworld-v30" sw.js
