@@ -23,6 +23,7 @@ jobs:
         run: |
           node --check performancefix-v93.js
           node --check firstperson-v94.js
+          node --check desktopperf-v95.js
           node --check integration-v30.js
 
       - name: Verify performance contract
@@ -32,30 +33,38 @@ jobs:
           import sys,re
           perf=Path('performancefix-v93.js').read_text(encoding='utf-8')
           fps=Path('firstperson-v94.js').read_text(encoding='utf-8')
+          desk=Path('desktopperf-v95.js').read_text(encoding='utf-8')
           html=Path('index.html').read_text(encoding='utf-8')
           boot=Path('integration-v30.js').read_text(encoding='utf-8')
           required_perf=[
               'const dt=Math.min(raw,.12)',
-              'renderer.shadowMap.enabled=heavyShadows',
-              'V93_TRAFFIC_ACC<1/30',
-              'V93_PED_ACC<1/24',
-              'const mapStep=V93_MOBILE?1/12:1/24',
               'v54ApplyLOD=function()',
               'function v93PixelCap()',
           ]
           missing=[x for x in required_perf if x not in perf]
           if missing:
-              print('Performance contract missing:',missing);sys.exit(1)
-          if './performancefix-v93.js?v=94' not in html:
-              print('Performance Rescue is not integrated in index.html');sys.exit(1)
-          if './firstperson-v94.js?v=94' not in html:
-              print('FPS performance layer is not integrated in index.html');sys.exit(1)
-          if 'antialias:false' not in fps or 'return Math.min(d,.74)' not in fps:
-              print('Mobile FPS render budget missing');sys.exit(1)
+              print('Base performance contract missing:',missing);sys.exit(1)
+          required95=[
+              'antialias:false',
+              "heavyShadows=profile==='high'&&!V95_COARSE",
+              "return p==='high'?60:p==='eco'?24:30",
+              'V95_TRAFFIC_ACC<1/hz',
+              'V95_PED_ACC<1/hz',
+              'camera.far=v95FarPlane()',
+              "return Math.min(d,V95_COARSE?.66:.76)",
+          ]
+          missing95=[x for x in required95 if x not in desk]
+          if missing95:
+              print('Desktop performance contract missing:',missing95);sys.exit(1)
+          for marker in ['./performancefix-v93.js?v=94','./firstperson-v94.js?v=94','./desktopperf-v95.js?v=95']:
+              if marker not in html:
+                  print('Performance layer not integrated:',marker);sys.exit(1)
+          if 'antialias:false' not in fps:
+              print('FPS mobile render budget missing');sys.exit(1)
           if "start.disabled=true" not in boot or "start.disabled=false" not in boot:
               print('Start-button readiness guard missing');sys.exit(1)
           m=re.search(r'<meta name="reforce-build" content="(\d+)"',html)
-          if not m or int(m.group(1))<94:
-              print('Build marker is older than FPS performance release');sys.exit(1)
+          if not m or int(m.group(1))<95:
+              print('Build marker is older than desktop rescue release');sys.exit(1)
           print('Build',m.group(1),'performance contract validated')
           PY
