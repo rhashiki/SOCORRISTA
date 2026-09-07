@@ -1,4 +1,4 @@
-const CACHE='reforce-openworld-v85';
+const CACHE='reforce-openworld-v90';
 async function precache(){
   const cache=await caches.open(CACHE);
   const res=await fetch('./index.html',{cache:'reload'});
