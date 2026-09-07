@@ -22,10 +22,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           set -e
-          for f in *.js; do
-            echo "Checking $f"
-            node --check "$f"
-          done
+          for f in *.js; do echo "Checking $f"; node --check "$f"; done
 
       - name: Verify index local assets
         run: |
@@ -37,8 +34,7 @@ jobs:
           missing=[p for p in refs if not Path(p).exists()]
           print('Local assets:', len(refs))
           if missing:
-              print('Missing:', missing)
-              sys.exit(1)
+              print('Missing:', missing); sys.exit(1)
           PY
 
       - name: Check integrated script order for declaration conflicts
@@ -64,14 +60,9 @@ jobs:
           sw=Path('sw.js').read_text(encoding='utf-8')
           state=Path('state-v6.js').read_text(encoding='utf-8')
           m=re.search(r'<meta name="reforce-build" content="(\d+)"',html)
-          if not m:
-              print('Missing reforce-build meta')
-              sys.exit(1)
+          if not m: print('Missing reforce-build meta'); sys.exit(1)
           build=int(m.group(1))
-          expected=f'reforce-openworld-v{build}'
-          if expected not in sw:
-              print('Service Worker cache mismatch:', expected)
-              sys.exit(1)
+          if f'reforce-openworld-v{build}' not in sw: print('Service Worker cache mismatch'); sys.exit(1)
           required=['incident-v8.js','director-v30.js','integration-v30.js']
           if build>=35: required += ['materials-v31.js','patientvisual-v32.js','traffic-v33.js','radio-v34.js','scenario-v35.js']
           if build>=40: required += ['map-v36.js','camera-v37.js','lighting-v38.js','transportvisual-v39.js','trafficvariety-v40.js']
@@ -83,14 +74,10 @@ jobs:
           if build>=70: required += ['vehicleorientation-v66.js','movement-v67.js','wayfinding-v68.js','hudcontext-v69.js','autoperf-v70.js']
           if build>=75:
               required += ['district-v71.js','incidentlocations-v72.js','outertraffic-v73.js','outerpedestrians-v74.js','roadroute-v75.js']
-              if 'const WORLD=210;' not in state:
-                  print('Expanded-world marker missing from state-v6.js')
-                  sys.exit(1)
-          if build>=80:
-              required += ['expandedmap-v76.js','landmarks-v77.js','districtstream-v78.js','outerlanes-v79.js','vehiclecontrols-v80.js','visual-v80.css']
+              if 'const WORLD=210;' not in state: print('Expanded-world marker missing'); sys.exit(1)
+          if build>=80: required += ['expandedmap-v76.js','landmarks-v77.js','districtstream-v78.js','outerlanes-v79.js','vehiclecontrols-v80.js','visual-v80.css']
+          if build>=85: required += ['characterquality-v81.js','locomotion-v82.js','ambulance-v83.js','trafficmotion-v84.js','renderstyle-v85.js']
           missing=[x for x in required if x not in html]
-          if missing:
-              print('Missing integration markers:',missing)
-              sys.exit(1)
+          if missing: print('Missing integration markers:',missing); sys.exit(1)
           print('Validated build',build)
           PY
